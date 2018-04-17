@@ -121,6 +121,7 @@ namespace Player
 			
 			hook.transform.position = fishingRodEnd.position;
 			hook.SetActive(true);
+			transform.root.GetComponent<PlayerMovements>().IsGrabbed = true;
 
 			float currentLerpTime = 0f;
 
@@ -172,6 +173,7 @@ namespace Player
 			hook.transform.position = fishingRodEnd.position;
 			StopAllCoroutines();
 			hook.SetActive(false);
+			transform.root.GetComponent<PlayerMovements>().IsGrabbed = false;
 			if(playerJoint != null) Destroy(playerJoint);
 			
 //			TODO Reset Orientation on ground
