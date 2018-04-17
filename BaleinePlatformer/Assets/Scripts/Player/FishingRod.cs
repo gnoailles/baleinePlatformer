@@ -62,18 +62,19 @@ namespace Player
 				playeRigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ; 
 				playeRigidbody.AddForce(Vector3.right * x * balanceForce);
 
-				if (playerJoint)
-				{
-					jointLimit.limit -= y * pullingSpeed * Time.deltaTime;
-					jointLimit.limit = Mathf.Max(jointLimit.limit, minLength);
-					playerJoint.linearLimit = jointLimit;
-				}
-			}
-			else
-			{
-				playeRigidbody.freezeRotation = true;
-			}
-		}
+				
+            }
+            if (playerJoint)
+            {
+                jointLimit.limit -= y * pullingSpeed * Time.deltaTime;
+                jointLimit.limit = Mathf.Max(jointLimit.limit, minLength);
+                playerJoint.linearLimit = jointLimit;
+            }
+            else
+            {
+                playeRigidbody.freezeRotation = true;
+            }
+        }
 
 		private void RotateRod()
 		{
