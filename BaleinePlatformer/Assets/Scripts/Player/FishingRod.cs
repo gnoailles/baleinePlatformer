@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel.Design.Serialization;
 using UnityEngine;
+using UnityEngine.Collections;
 
 namespace Player
 {
@@ -26,6 +27,8 @@ namespace Player
 		[SerializeField] private float minHookDistance = 3f;
 		[Tooltip("Height change speed in unit/s")]
 		[SerializeField] private float pullingSpeed = 1f;
+		[Tooltip("Strength of the balancement force added when hooked")]
+		[SerializeField] private float balanceForce = 1f;
 
 		private Vector3 cameraDist;
 		private Plane hitPlane;
@@ -49,13 +52,15 @@ namespace Player
 			else if (Input.GetButtonUp("Fire1"))
 				DetachGrappling();
 
+			
+			Rigidbody playeRigidbody = transform.root.GetComponent<Rigidbody>();
+			float x =Input.GetAxisRaw("Horizontal");
+			float y =Input.GetAxisRaw("Vertical");
+			
 			if (hook.activeSelf)
 			{
-				
-				float x =Input.GetAxisRaw("Horizontal");
-				float y =Input.GetAxisRaw("Vertical");
-				Rigidbody playeRigidbody = transform.root.GetComponent<Rigidbody>();
-				playeRigidbody.AddForce(Vector3.right * x);
+				playeRigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ; 
+				playeRigidbody.AddForce(Vector3.right * x * balanceForce);
 
 				if (playerJoint)
 				{
@@ -64,7 +69,10 @@ namespace Player
 					playerJoint.linearLimit = jointLimit;
 				}
 			}
-				
+			else
+			{
+				playeRigidbody.freezeRotation = true;
+			}
 		}
 
 		private void RotateRod()
@@ -149,9 +157,6 @@ namespace Player
 			playerJoint.xMotion = ConfigurableJointMotion.Limited;
 			playerJoint.yMotion = ConfigurableJointMotion.Limited;
 			playerJoint.zMotion = ConfigurableJointMotion.Locked;
-//			playerJoint.angularXMotion = ConfigurableJointMotion.Locked;
-//			playerJoint.angularYMotion = ConfigurableJointMotion.Locked;
-//			playerJoint.angularZMotion = ConfigurableJointMotion.Locked;
 
 
 			jointLimit = new SoftJointLimit
