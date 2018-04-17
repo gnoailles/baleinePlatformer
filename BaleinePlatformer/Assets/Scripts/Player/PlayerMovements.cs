@@ -14,6 +14,7 @@ public class PlayerMovements : MonoBehaviour {
     private Vector3 jumpDirection = Vector3.zero;
     private float X = 0.0f;
     private float jumpForce = 0.0f;
+    private bool isGrabbed;
 
     private void Start()
     {        
@@ -56,8 +57,18 @@ public class PlayerMovements : MonoBehaviour {
 
     void FixedUpdate()
     {
-       MovePlayer(X);
-       if (Input.GetButton(jumpAxis))
-           Jump();
+        if (!isGrabbed)
+        {
+           if (Input.GetButton(jumpAxis))
+                Jump();
+
+           MovePlayer(X);
+        }
+    }
+
+    public bool IsGrabbed
+    {
+        get { return isGrabbed; }
+        set { isGrabbed = value; }
     }
 }
