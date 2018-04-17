@@ -13,8 +13,8 @@ public class PlayerMovements : MonoBehaviour {
     private Vector3 gravity = Vector3.zero;
     private Vector3 jumpDirection = Vector3.zero;
     private float X = 0.0f;
-    private float Y = 0.0f;
     private float jumpForce = 0.0f;
+    private bool isGrabbed;
 
     private void Start()
     {        
@@ -26,30 +26,48 @@ public class PlayerMovements : MonoBehaviour {
     void Update ()
     {
         X = Input.GetAxisRaw(xAxis);
-        Y = Input.GetAxisRaw(jumpAxis);
 	}
 
     void Jump()
-    {    
-        if (Input.GetButton(jumpAxis) && Physics.Raycast(transform.position, Vector3.down, 0.5f) )
+    {           
+        if (Physics.Raycast(transform.position, Vector3.down, 0.5f) )
         {
 
 #if UNITY_EDITOR
             jumpForce = Mathf.Sqrt((jumpHeight) * 2f * gravity.magnitude) * playerRigidbody.mass;
 #endif
+
+            playerRigidbody.velocity = new Vector3(playerRigidbody.velocity.x, 0, 0);
             playerRigidbody.AddForce(jumpForce * transform.up, ForceMode.Impulse);
                     
         }
     }
+
     void MovePlayer(float horiz)
     {
         Vector3 moveDirection = playerRigidbody.velocity;
         moveDirection.x = horiz * speed;
-        playerRigidbody.velocity = moveDirection ;       
+
+        RaycastHit hit;
+        if (playerRigidbody.SweepTest(moveDirection, out hit, 0.15f))
+            playerRigidbody.velocity = new Vector3(0, playerRigidbody.velocity.y, 0);
+        else
+            playerRigidbody.velocity = moveDirection;
     }
+
     void FixedUpdate()
     {
+        if (!isGrabbed)
+        {
+       if (Input.GetButton(jumpAxis))
+           Jump();
        MovePlayer(X);
-       Jump();        
+        }
+    }
+
+    public bool IsGrabbed
+    {
+        get { return isGrabbed; }
+        set { isGrabbed = value; }
     }
 }
