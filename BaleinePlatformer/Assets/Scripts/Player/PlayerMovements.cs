@@ -59,9 +59,10 @@ public class PlayerMovements : MonoBehaviour {
     {
         if (!isGrabbed)
         {
-       if (Input.GetButton(jumpAxis))
-           Jump();
-       MovePlayer(X);
+           if (Input.GetButton(jumpAxis))
+                Jump();
+
+           MovePlayer(X);
         }
     }
 
