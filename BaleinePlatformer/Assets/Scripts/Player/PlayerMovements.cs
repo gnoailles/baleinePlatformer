@@ -15,6 +15,7 @@ public class PlayerMovements : MonoBehaviour {
     private float X = 0.0f;
     private float Y = 0.0f;
     private float jumpForce = 0.0f;
+    private bool isGrabbed;
 
     private void Start()
     {        
@@ -49,7 +50,16 @@ public class PlayerMovements : MonoBehaviour {
     }
     void FixedUpdate()
     {
-       MovePlayer(X);
-       Jump();        
+        if (!isGrabbed)
+        {
+            MovePlayer(X);
+            Jump();
+        }
+    }
+
+    public bool IsGrabbed
+    {
+        get { return isGrabbed; }
+        set { isGrabbed = value; }
     }
 }

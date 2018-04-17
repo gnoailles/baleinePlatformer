@@ -559,6 +559,7 @@ GameObject:
   - component: {fileID: 945816689}
   - component: {fileID: 945816688}
   - component: {fileID: 945816687}
+  - component: {fileID: 945816691}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -597,7 +598,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 50
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -622,13 +623,27 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 945816686}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 7.04, z: -16.37}
+  m_LocalRotation: {x: 0.06412579, y: -0, z: -0, w: 0.99794185}
+  m_LocalPosition: {x: 0, y: 10, z: -21.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 7.353, y: 0, z: 0}
+--- !u!114 &945816691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 945816686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d7e0725e6b8834d926c94dcf9365da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2052858299}
+  xOffset: 0
+  delay: 0.4
 --- !u!1 &1065276095
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,6 +1141,7 @@ GameObject:
   - component: {fileID: 2052858300}
   - component: {fileID: 2052858302}
   - component: {fileID: 2052858301}
+  - component: {fileID: 2052858303}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1175,3 +1191,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &2052858303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2052858299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f3c03e272eaed40ba4bb75f3fa5025, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xAxis: Horizontal
+  jumpAxis: Jump
+  speed: 5
+  jumpHeight: 5
