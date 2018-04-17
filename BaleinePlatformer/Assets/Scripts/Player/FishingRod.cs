@@ -50,7 +50,7 @@ namespace Player
 			if (Input.GetButtonDown("Fire1"))
 				LaunchGrappling();
 			else if (Input.GetButtonUp("Fire1"))
-				DetachGrappling();
+				DetachHook();
 
 			
 			Rigidbody playeRigidbody = transform.root.GetComponent<Rigidbody>();
@@ -168,7 +168,7 @@ namespace Player
 			playerJoint.linearLimit = jointLimit;
 		}
 
-		private void DetachGrappling()
+		private void DetachHook()
 		{
 			hook.transform.position = fishingRodEnd.position;
 			StopAllCoroutines();
