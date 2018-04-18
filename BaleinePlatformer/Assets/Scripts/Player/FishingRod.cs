@@ -7,8 +7,7 @@ public class FishingRod : MonoBehaviour
 {
 	[SerializeField] private Camera playerCamera;
 	[SerializeField] private Transform fishingRodEnd;
-	[SerializeField] private GameObject hook;
-	
+	[SerializeField] private Transform hook;
 
 	[Space(20)]
 	
@@ -18,26 +17,26 @@ public class FishingRod : MonoBehaviour
 	[SerializeField] private float hookTravelTime = 4f;
 	
 	[Tooltip("Minimum pole string length")]
-	[SerializeField] private float minLength = 1f;
+	[SerializeField] private float minLength = 2f;
 	[Tooltip("Maximum pole string length")]
 	[SerializeField] private float maxLength = 100;
 	[Tooltip("Minimum distance to hooked object")]
 	[SerializeField] private float minHookDistance = 3f;
 	[Tooltip("Height change speed in unit/s")]
 	[SerializeField] private float pullingSpeed = 1f;
-	[Tooltip("Strength of the balancement force added when hooked")]
-	[SerializeField] private float balanceForce = 1f;
 
+	private LineRenderer lineRenderer;	
 	private Vector3 cameraDist;
 	private Plane hitPlane;
-
-	private ConfigurableJoint playerJoint;
-	private SoftJointLimit jointLimit;
+	
+	private float ropeLength;
+	private bool isHooked;
 
 	void Start()
 	{
 		cameraDist = new Vector3(playerCamera.transform.position.x, playerCamera.transform.position.y, transform.position.z);
 		hitPlane = new Plane(Vector3.forward, cameraDist);
+		lineRenderer = fishingRodEnd.GetComponent<LineRenderer>();
 	}
 
 
@@ -50,34 +49,32 @@ public class FishingRod : MonoBehaviour
 		else if (Input.GetButtonUp("Fire1"))
 			DetachHook();
 
-		
-		Rigidbody playeRigidbody = transform.root.GetComponent<Rigidbody>();
-		float x =Input.GetAxisRaw("Horizontal");
 		float y =Input.GetAxisRaw("Vertical");
-		
-		if (hook.activeSelf)
+		if (y != 0f)
 		{
-			playeRigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ; 
-			playeRigidbody.AddForce(Vector3.right * x * balanceForce);
+			ropeLength -= y * PullingSpeed * Time.deltaTime;
+			ropeLength = Mathf.Max(ropeLength, minLength);
+		}
 
-			if (playerJoint)
-			{
-				jointLimit.limit -= y * pullingSpeed * Time.deltaTime;
-				jointLimit.limit = Mathf.Max(jointLimit.limit, minLength);
-				playerJoint.linearLimit = jointLimit;
-			}
-		}
-		else
-		{
-			playeRigidbody.freezeRotation = true;
-		}
+		if(hook.gameObject.activeSelf)
+			DrawLine();
+		
+	}
+
+	private void DrawLine()
+	{
+		
+		lineRenderer.enabled = true;
+		lineRenderer.positionCount = 2;
+		lineRenderer.SetPosition(0,fishingRodEnd.position);
+		lineRenderer.SetPosition(1,hook.position);
 	}
 
 	private void RotateRod()
 	{
-		if (hook.activeSelf)
+		if (isHooked)
 		{
-			transform.LookAt(hook.transform);
+			transform.LookAt(hook.position);
 		}
 		else
 		{
@@ -99,13 +96,13 @@ public class FishingRod : MonoBehaviour
 
 	private IEnumerator GrapplingTravel()
 	{
-		Debug.DrawLine(fishingRodEnd.position, transform.forward * maxLength, Color.red);
+		Debug.DrawLine(transform.root.position, transform.forward * maxLength, Color.red);
 
 		RaycastHit hit;
-		Vector3 hookHitPos = fishingRodEnd.position + transform.forward * maxLength;
+		Vector3 hookHitPos = transform.root.position + transform.forward * maxLength;
 		bool isGrappable = false;
 
-		if (Physics.Raycast(fishingRodEnd.position, transform.forward, out hit, maxLength))
+		if (Physics.Raycast(transform.root.position, transform.forward, out hit, maxLength))
 		{
 			if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Grappable") &&
 				Vector3.Distance(hit.point, transform.root.position) > minHookDistance)
@@ -117,13 +114,12 @@ public class FishingRod : MonoBehaviour
 
 		yield return new WaitForSeconds(hookLaunchAnimDuration);
 		
-		hook.transform.position = fishingRodEnd.position;
-		hook.SetActive(true);
-		transform.root.GetComponent<PlayerMovements>().IsGrabbed = true;
+		hook.position = fishingRodEnd.position;
+		hook.gameObject.SetActive(true);
 
 		float currentLerpTime = 0f;
 
-		while ((hook.transform.position - hookHitPos).magnitude >= 0.5f)
+		while ((hook.position - hookHitPos).magnitude >= 0.5f)
 		{
 			currentLerpTime += Time.deltaTime;
 			if (currentLerpTime > hookTravelTime)
@@ -131,51 +127,49 @@ public class FishingRod : MonoBehaviour
 
 			float easeInTime = Utils.Easing.Exponential.In(currentLerpTime / hookTravelTime);
 			
-			hook.transform.position = Vector3.Lerp(hook.transform.position, hookHitPos,
+			hook.position = Vector3.Lerp(hook.position, hookHitPos,
 				easeInTime);
 			yield return null;
 		}
 
-		if (!isGrappable) yield break;
-		
-		hook.transform.rotation = Quaternion.identity;
-		SetJoint();
-	}
-
-	private void SetJoint()
-	{
-		playerJoint = transform.root.gameObject.AddComponent<ConfigurableJoint> ();
-		playerJoint.connectedBody = hook.GetComponent<Rigidbody>();
-		playerJoint.axis = Vector3.back;
-		playerJoint.anchor = Vector3.zero;
-		
-
-		playerJoint.autoConfigureConnectedAnchor = false;
-		playerJoint.connectedAnchor = Vector3.zero;
-		
-		playerJoint.xMotion = ConfigurableJointMotion.Limited;
-		playerJoint.yMotion = ConfigurableJointMotion.Limited;
-		playerJoint.zMotion = ConfigurableJointMotion.Locked;
-
-
-		jointLimit = new SoftJointLimit
+		if (!isGrappable)
 		{
-			limit = Vector3.Distance(hook.transform.position,transform.root.position) + 1f,
-			contactDistance = 1f
-		};
-		playerJoint.linearLimit = jointLimit;
-	}
+			DetachHook();
+			yield break;
+		}
 
+		isHooked = true;
+		hook.transform.rotation = Quaternion.identity;
+		ropeLength = Vector3.Distance(transform.root.position, hook.position);
+	}
+	
 	private void DetachHook()
 	{
-		hook.transform.position = fishingRodEnd.position;
+		hook.position = fishingRodEnd.position;
+		isHooked = false;
 		StopAllCoroutines();
-		hook.SetActive(false);
-		transform.root.GetComponent<PlayerMovements>().IsGrabbed = false;
-		if(playerJoint != null) Destroy(playerJoint);
-		
-//			TODO Reset Orientation on ground
-//			if(hook.active)
-			transform.root.rotation = Quaternion.Euler(0, 0, transform.root.rotation.z);
+		hook.gameObject.SetActive(false);
+		lineRenderer.enabled = false;
+		lineRenderer.positionCount = 0;
+	}
+
+	public Transform Hook
+	{
+		get { return hook; }
+	}
+
+	public bool IsHooked
+	{
+		get { return isHooked; }
+	}
+
+	public float RopeLength
+	{
+		get { return ropeLength; }
+	}
+
+	public float PullingSpeed
+	{
+		get { return pullingSpeed; }
 	}
 }

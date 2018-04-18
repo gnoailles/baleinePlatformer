@@ -1,71 +1,58 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using NUnit.Framework.Constraints;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
-public class Controller : MonoBehaviour
-{	
-	struct RaycastOrigins
-	{
-		public Vector2 topLeft, topRight;
-		public Vector2 bottomLeft, bottomRight;
-	}
+public class Controller : RaycastController
+{
+
+	#region Collisions
 	public struct CollisionInfo
 	{
 		public bool above, below;
 		public bool left, right;
-		public bool climbingSlope;
+		public bool climbingSlope, descendingSlope;
 		public float slopeAngle, previousSlopeAngle;
 
 		public void Reset()
 		{
-			above = below = left = right = climbingSlope = false;
+			above = below = left = right = false;
+			climbingSlope = descendingSlope = false;
 			
 			previousSlopeAngle = slopeAngle;
 			slopeAngle = 0f;
 		}
 	}
 
-	private const float skinWidth = 0.015f;
-
 	public CollisionInfo collisions;
 	
-	[SerializeField] private LayerMask collisionMask;
-	[SerializeField] private int horizontalRayCount = 4;
-	[SerializeField] private int verticalRayCount = 4;
+	#endregion
 	
-	[SerializeField] private float maxClimbAmgle = 60f;
+	[SerializeField] private float maxClimbAngle = 60f;
+	[SerializeField] private float maxDescendAngle = 45f;
 
-	private float horizontalRaySpacing;
-	private float verticalRaySpacing;
-	
-	private BoxCollider collider;
-	private RaycastOrigins raycastOrigins;
+	private Vector2 previousVelocity;
 
-	private void Start()
+	public override void Start()
 	{
-		collider = GetComponent<BoxCollider>();
-		ComputeRaySpacing();
+		base.Start();
 	}
 
-	void VerticalCollisions(ref Vector3 velocity)
+	void VerticalCollisions(ref Vector2 testVelocity)
 	{
 
-		float directionY = Mathf.Sign(velocity.y);
-		float rayLength = Mathf.Abs(velocity.y) + skinWidth;
+		float directionY = Mathf.Sign(testVelocity.y);
+		float rayLength = Mathf.Abs(testVelocity.y) + SkinWidth;
 		
 		
 		for (int i = 0; i < verticalRayCount; i++)
 		{
 			Vector3 rayOrigin = (directionY < 0) ? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
-			rayOrigin += Vector3.right * (verticalRaySpacing * i + velocity.x);
+			rayOrigin += transform.right * (verticalRaySpacing * i + testVelocity.x);
 
 			RaycastHit hit;
 
-			if (Physics.Raycast(rayOrigin, Vector3.up * directionY, out hit, rayLength))
+			if (Physics.Raycast(rayOrigin, transform.up * directionY, out hit, rayLength, collisionMask))
 			{
-				velocity.y = (hit.distance - skinWidth) * directionY;
+				testVelocity.y = (hit.distance - SkinWidth) * directionY;
 				rayLength = hit.distance;
 
 				collisions.below = directionY < 0;
@@ -73,73 +60,81 @@ public class Controller : MonoBehaviour
 				
 				if (collisions.climbingSlope)
 				{
-					velocity.x = velocity.y / Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
+					testVelocity.x = testVelocity.y / Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(testVelocity.x);
 				}
 				
 			}
+			Debug.DrawRay(rayOrigin, transform.up * directionY * rayLength, Color.red);
+		}
+		
+		
+		//Slope angle change
+		if (collisions.climbingSlope)
+		{
+			float directionX = Mathf.Sign(testVelocity.x);
+			rayLength = Mathf.Abs(testVelocity.x + SkinWidth);
 
-			if (collisions.climbingSlope)
+			Vector3 rayOrigin = ((directionX < 0) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight);
+			rayOrigin += transform.up * testVelocity.y;
+			RaycastHit hit;
+				
+			if(Physics.Raycast(rayOrigin, Vector2.right * directionX, out hit, rayLength))
 			{
-				float directionX = Mathf.Sign(velocity.x);
-				rayLength = Mathf.Abs(velocity.x + skinWidth);
-
-				rayOrigin = ((directionX < 0) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight) + Vector2.up * velocity.y;
-				
-				if(Physics.Raycast(rayOrigin, Vector3.up * directionY, out hit, rayLength))
+				float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
+				if (slopeAngle != collisions.slopeAngle)
 				{
-					float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
-					if (slopeAngle != collisions.slopeAngle)
-					{
-						velocity.x = (hit.distance - skinWidth) * directionX;
-						collisions.slopeAngle = slopeAngle;
-					}
+					testVelocity.x = (hit.distance - SkinWidth) * directionX;
+					collisions.slopeAngle = slopeAngle;
 				}
 			}
-			
-			
-			Debug.DrawRay(rayOrigin, Vector3.up * directionY * rayLength, Color.red);
 		}
 	}
 
-	void HorizontalCollisions(ref Vector3 velocity)
+	void HorizontalCollisions(ref Vector2 testVelocity)
 	{
 
-		float directionX = Mathf.Sign(velocity.x);
-		float rayLength = Mathf.Abs(velocity.x) + skinWidth;
+		float directionX = Mathf.Sign(testVelocity.x);
+		float rayLength = Mathf.Abs(testVelocity.x) + SkinWidth;
 		
 		
 		for (int i = 0; i < horizontalRayCount; i++)
 		{
 			Vector3 rayOrigin = (directionX < 0) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
-			rayOrigin += Vector3.up * (horizontalRaySpacing * i);
+			rayOrigin += transform.up * (horizontalRaySpacing * i);
 
 			RaycastHit hit;
 
-			if (Physics.Raycast(rayOrigin, Vector3.right * directionX, out hit, rayLength))
+			if (Physics.Raycast(rayOrigin, transform.right * directionX, out hit, rayLength))
 			{
-				float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+				float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 
-				if(i == 0 && slopeAngle <= maxClimbAmgle)
+				if(i == 0 && slopeAngle <= maxClimbAngle)
 				{
+					if (collisions.descendingSlope)
+					{
+						collisions.descendingSlope = false;
+						testVelocity = previousVelocity;
+					}
+					
 					float distanceToSlopeStart = 0f;
 					if (slopeAngle != collisions.previousSlopeAngle)
 					{
-						distanceToSlopeStart = hit.distance - skinWidth;
-						velocity.x -= distanceToSlopeStart * directionX;
+						distanceToSlopeStart = hit.distance - SkinWidth;
+						testVelocity.x -= distanceToSlopeStart * directionX;
 					}
 
-					Climbslope(ref velocity, slopeAngle);
-					velocity.x += distanceToSlopeStart * directionX;
+					ClimbSlope(ref testVelocity, slopeAngle);
+					testVelocity.x += distanceToSlopeStart * directionX;
 				}
 
-				if (!collisions.climbingSlope || slopeAngle > maxClimbAmgle)
+				if (!collisions.climbingSlope || slopeAngle > maxClimbAngle)
 				{
-					velocity.x = (hit.distance - skinWidth) * directionX;
+					testVelocity.x = (hit.distance - SkinWidth) * directionX;
 					rayLength = hit.distance;
 
 					if (collisions.climbingSlope)
 					{
-						velocity.y = Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x);
+						testVelocity.y = Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(testVelocity.x);
 					}
 
 					collisions.left = directionX < 0;
@@ -148,60 +143,73 @@ public class Controller : MonoBehaviour
 			}
 			
 			
-			Debug.DrawRay(rayOrigin, Vector3.right * directionX * rayLength, Color.red);
+			Debug.DrawRay(rayOrigin, transform.right * directionX * rayLength, Color.red);
 		}
 	}
 
-	private void Climbslope(ref Vector3 velocity, float slopeAngle)
+	private void ClimbSlope(ref Vector2 testVelocity, float slopeAngle)
 	{
-		float moveDistance = Mathf.Abs(velocity.x);
+		float moveDistance = Mathf.Abs(testVelocity.x);
 		
 		float climbVelocityY = Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * moveDistance;
 
-		if (velocity.y <= climbVelocityY)
+		if (testVelocity.y <= climbVelocityY)
 		{
-			velocity.y = climbVelocityY;	
-			velocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign(velocity.x);
+			testVelocity.y = climbVelocityY;	
+			testVelocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign(testVelocity.x);
 			collisions.below = collisions.climbingSlope = true;
 			collisions.slopeAngle = slopeAngle;
 		}
 
 	}
-
-	private void UpdateRaycastOrigins()
+	
+	private void DescendSlope(ref Vector2 testVelocity)
 	{
-		Bounds bounds = collider.bounds;
-		bounds.Expand(skinWidth * -2);
-		
-		raycastOrigins.topLeft 		= new Vector2(bounds.min.x, bounds.max.y);
-		raycastOrigins.topRight 	= new Vector2(bounds.max.x, bounds.max.y);
-		raycastOrigins.bottomLeft 	= new Vector2(bounds.min.x, bounds.min.y);
-		raycastOrigins.bottomRight 	= new Vector2(bounds.max.x, bounds.min.y);
+		float directionX = Mathf.Sign(testVelocity.x);
+
+		Vector2 rayOrigin = (directionX < 0) ? raycastOrigins.bottomRight : raycastOrigins.bottomLeft;
+
+		RaycastHit hit;
+
+		if (Physics.Raycast(rayOrigin, Vector2.down, out hit, Mathf.Infinity))
+		{
+			float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
+			if (slopeAngle != 0 && slopeAngle <= maxDescendAngle)
+			{
+				if (Mathf.Sign(hit.normal.x) == directionX)
+				{
+					if (hit.distance - SkinWidth <= Mathf.Tan(slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(testVelocity.x))
+					{
+						float moveDistance = Mathf.Abs(testVelocity.x);
+						float descendVelocityY = Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * moveDistance;
+						testVelocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign(testVelocity.x);
+						testVelocity.y -= descendVelocityY;
+
+						collisions.slopeAngle = slopeAngle;
+						collisions.descendingSlope = true;
+						collisions.below = true;
+					}
+				}
+			}
+		}
+
 	}
 
-	private void ComputeRaySpacing()
+
+
+	public Vector2 Collide(Vector2 testVelocity)
 	{
-		Bounds bounds = collider.bounds;
-		bounds.Expand(skinWidth * -2);
-
-		horizontalRayCount 	= Mathf.Max(horizontalRayCount, 2);
-		verticalRayCount 	= Mathf.Max(verticalRayCount, 2);
-
-		horizontalRaySpacing 	= bounds.size.y / (horizontalRayCount - 1);
-		verticalRaySpacing 		= bounds.size.x / (verticalRayCount - 1);
-	}
-
-
-	public void Move(Vector3 velocity)
-	{
-		collisions.Reset();
 		UpdateRaycastOrigins();
-		
-		if(velocity.x != 0f)
-			HorizontalCollisions(ref velocity);
-		if(velocity.y != 0f)
-		VerticalCollisions(ref velocity);
-		
-		transform.Translate(velocity);
+		collisions.Reset();
+		previousVelocity = testVelocity;
+
+		if(testVelocity.y < 0f)
+			DescendSlope(ref testVelocity);
+		if(testVelocity.x != 0f)
+			HorizontalCollisions(ref testVelocity);
+		if(testVelocity.y != 0f)
+			VerticalCollisions(ref testVelocity);
+
+		return testVelocity;
 	}
 }
