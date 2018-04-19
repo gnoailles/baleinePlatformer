@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 42b86238cfe062b468264a84025f8dd8
+guid: 174b17e56fb88104897b13c9c83f651d
 folderAsset: yes
-timeCreated: 1523902989
+timeCreated: 1524147584
 licenseType: Free
 DefaultImporter:
+<<<<<<< HEAD
+=======
   externalObjects: {}
+>>>>>>> pullable-objects
   userData: 
   assetBundleName: 
   assetBundleVariant: 
