@@ -40,21 +40,21 @@ public class Player : MonoBehaviour
 	{
 		position = transform.position;
 		
-		Vector3 up = fishingRod.Hook.position - transform.position;
-		transform.rotation = Quaternion.LookRotation( Vector3.forward, ((fishingRod.IsHooked && !controller.collisions.below )? up : Vector3.up));
+		Vector3 up = fishingRod.HookInfos.hook.position - transform.position;
+		transform.rotation = Quaternion.LookRotation( Vector3.forward, ((fishingRod.HookInfos.state == FishingRod.HookState.HOOKED && !controller.collisions.below )? up : Vector3.up));
 
 
-		if (controller.collisions.below || fishingRod.IsHooked)
+		if (controller.collisions.below || fishingRod.HookInfos.state == FishingRod.HookState.HOOKED)
 			isJumping = false;
 		
-		if (controller.collisions.above || controller.collisions.below || fishingRod.IsHooked)
+		if (controller.collisions.above || controller.collisions.below || fishingRod.HookInfos.state == FishingRod.HookState.HOOKED)
 			velocity.y = 0;
 
 		Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 		
 
 
-		if (!fishingRod.IsHooked)
+		if (fishingRod.HookInfos.state == FishingRod.HookState.IDLE)
 		{
 			rigidbody.isKinematic = true;
 			
