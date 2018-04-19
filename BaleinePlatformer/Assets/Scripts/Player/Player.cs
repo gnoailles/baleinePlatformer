@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
 
 			if (animator != null)
 			{
-				animator.SetBool("isWalking", input.x > 0f);
+				animator.SetBool("isWalking", (Mathf.Abs(input.x) > 0f));
 			}
 				
 			
