@@ -93,7 +93,9 @@ public class Player : MonoBehaviour
 
 		Vector2 constrainedVel = controller.Collide(testPos - position);
 
-		velocity = constrainedVel / Time.deltaTime;
+        if(Time.deltaTime > 0)
+		    velocity = constrainedVel / Time.deltaTime;
+
 		transform.Translate(constrainedVel);
 	}
 }
