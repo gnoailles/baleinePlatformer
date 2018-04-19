@@ -197,6 +197,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &103448262 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1634860113722936, guid: 2a889113a3dd57e41872ba7be94122b7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1736772212}
+--- !u!54 &103448265
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 103448262}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 14
+  m_CollisionDetection: 0
 --- !u!1 &222083775
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,9 +462,10 @@ MonoBehaviour:
   hookLaunchAnimDuration: 0.5
   hookTravelTime: 0.5
   minLength: 1
-  maxLength: 30
+  maxLength: 15
   minHookDistance: 3
   pullingSpeed: 4
+  balanceForce: 5
 --- !u!1 &771564885
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,6 +567,7 @@ GameObject:
   - component: {fileID: 1005742505}
   - component: {fileID: 1005742504}
   - component: {fileID: 1005742503}
+  - component: {fileID: 1005742506}
   m_Layer: 0
   m_Name: PlayerTestController
   m_TagString: Untagged
@@ -589,7 +611,7 @@ MonoBehaviour:
   accelerationTimeAirbourne: 0.1
   accelerationTimeGrounded: 0.05
   jumpHeight: 2
-  timeToJumpApex: 0.4
+  timeToJumpApex: 0.2
   hookBalanceForce: 6
   hookMaxAngle: 50
 --- !u!65 &1005742505
@@ -604,6 +626,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!54 &1005742506
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1005742502}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!4 &1005742507
 Transform:
   m_ObjectHideFlags: 0
@@ -624,6 +661,48 @@ Transform:
   m_PrefabParentObject: {fileID: 4520098318274438, guid: 2a889113a3dd57e41872ba7be94122b7,
     type: 2}
   m_PrefabInternal: {fileID: 1736772212}
+--- !u!1001 &1186497636
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4501334495708016, guid: 97835528834395b4daf7eda32741589b, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -9.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4501334495708016, guid: 97835528834395b4daf7eda32741589b, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 3.3515499
+      objectReference: {fileID: 0}
+    - target: {fileID: 4501334495708016, guid: 97835528834395b4daf7eda32741589b, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.14124705
+      objectReference: {fileID: 0}
+    - target: {fileID: 4501334495708016, guid: 97835528834395b4daf7eda32741589b, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4501334495708016, guid: 97835528834395b4daf7eda32741589b, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4501334495708016, guid: 97835528834395b4daf7eda32741589b, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4501334495708016, guid: 97835528834395b4daf7eda32741589b, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4501334495708016, guid: 97835528834395b4daf7eda32741589b, type: 2}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 97835528834395b4daf7eda32741589b, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1431733978
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,6 +937,10 @@ Prefab:
     - target: {fileID: 4520098318274438, guid: 2a889113a3dd57e41872ba7be94122b7, type: 2}
       propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1634860113722936, guid: 2a889113a3dd57e41872ba7be94122b7, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 54255002355924592, guid: 2a889113a3dd57e41872ba7be94122b7, type: 2}

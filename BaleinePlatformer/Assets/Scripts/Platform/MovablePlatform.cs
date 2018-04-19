@@ -1,18 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MovablePlatform : MonoBehaviour {
 
     [SerializeField] Transform playerPos;
     private Vector3 bufferPlayerPosition;
-    private bool isGrabbed = false;
+    private bool isGrabbed;
 
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
 	void FixedUpdate () {
         if (isGrabbed)
         {
