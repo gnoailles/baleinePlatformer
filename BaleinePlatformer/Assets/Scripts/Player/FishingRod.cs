@@ -8,6 +8,7 @@ public class FishingRod : MonoBehaviour
 	[SerializeField] private Camera playerCamera;
 	[SerializeField] private Transform fishingRodEnd;
 	[SerializeField] private Transform hook;
+    [SerializeField] private Transform CrossHair;
 
 	[Space(20)]
 	
@@ -62,8 +63,7 @@ public class FishingRod : MonoBehaviour
 	}
 
 	private void DrawLine()
-	{
-		
+	{		
 		lineRenderer.enabled = true;
 		lineRenderer.positionCount = 2;
 		lineRenderer.SetPosition(0,fishingRodEnd.position);
@@ -78,15 +78,21 @@ public class FishingRod : MonoBehaviour
 		}
 		else
 		{
-			Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-			float enter;
+
+         // transform.localEulerAngles = new Vector3(Input.GetAxis("Mouse X") * 60, Input.GetAxis("Mouse Y") * 50, transform.localEulerAngles.z);
+
+
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+           // Ray ray = playerCamera.ScreenPointToRay(new Vector3(Input.GetAxis("Mouse X") * 60, Input.GetAxis("Mouse Y") * 50, 0));
+
+            float enter;
 
 			if (hitPlane.Raycast(ray, out enter))
 			{
 				Vector3 hitPoint = ray.GetPoint(enter);
 				transform.LookAt(hitPoint);
 			}
-		}
+        }
 	}
 
 	private void LaunchGrappling()
@@ -107,17 +113,24 @@ public class FishingRod : MonoBehaviour
 			if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Grappable") &&
 				Vector3.Distance(hit.point, transform.root.position) > minHookDistance)
 			{
-				isGrappable = true;
+              
+                isGrappable = true;
 				hookHitPos = hit.point;
 			}
+
+            if (hit.collider.tag == "Pullable" &&
+                Vector3.Distance(hit.point, transform.root.position) > minHookDistance)
+            {
+                hit.collider.gameObject.GetComponent<MovablePlatform>().Grabbed();
+            }
 		}
 
 		yield return new WaitForSeconds(hookLaunchAnimDuration);
 		
 		hook.position = fishingRodEnd.position;
 		hook.gameObject.SetActive(true);
-
-		float currentLerpTime = 0f;
+           
+        float currentLerpTime = 0f;
 
 		while ((hook.position - hookHitPos).magnitude >= 0.5f)
 		{
@@ -130,17 +143,21 @@ public class FishingRod : MonoBehaviour
 			hook.position = Vector3.Lerp(hook.position, hookHitPos,
 				easeInTime);
 			yield return null;
-		}
+		}          
 
-		if (!isGrappable)
+        if (!isGrappable)
 		{
-			DetachHook();
-			yield break;
+            DetachHook();
+            yield break;
 		}
 
-		isHooked = true;
+        if (hit.collider.tag == "Pullable")
+            hit.collider.gameObject.GetComponent<MovablePlatform>().Detach();
+
+        isHooked = true;
 		hook.transform.rotation = Quaternion.identity;
-		ropeLength = Vector3.Distance(transform.root.position, hook.position);
+
+        ropeLength = Vector3.Distance(transform.root.position, hook.position);
 	}
 	
 	private void DetachHook()
