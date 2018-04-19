@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngineInternal.Input;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Controller))]
 public class Player : MonoBehaviour
@@ -13,7 +9,6 @@ public class Player : MonoBehaviour
 	
 	
 	[SerializeField] private float gravity = 20f;
-	[SerializeField] private float mass = 1f;
 	[SerializeField] private float moveSpeed = 5f;
 	[SerializeField] private float accelerationTimeAirbourne = 0.2f;
 	[SerializeField] private float accelerationTimeGrounded = 0.1f;
@@ -23,13 +18,8 @@ public class Player : MonoBehaviour
 	[SerializeField] private float jumpHeight = 4f;
 	[SerializeField] private float timeToJumpApex = .4f;
 	
-	[Space(20)]
-	
-	[SerializeField] private float hookBalanceForce = 0.1f;
-	[SerializeField] private float hookMaxAngle = 50f;
-	
 	private Controller controller;
-	private Vector2 acceleration;
+	private Rigidbody rigidbody;
 	private Vector2 velocity;
 	private Vector2 position;
 	private float jumpGravity;
@@ -41,6 +31,7 @@ public class Player : MonoBehaviour
 	void Start()
 	{
 		controller = GetComponent<Controller>();
+		rigidbody = GetComponent<Rigidbody>();
 		jumpGravity = (2 * jumpHeight) / (timeToJumpApex * timeToJumpApex);
 		jumpVelocity = jumpGravity * timeToJumpApex;
 	}
@@ -49,22 +40,24 @@ public class Player : MonoBehaviour
 	{
 		position = transform.position;
 		
-		Vector3 up = fishingRod.Hook.position - transform.position;
-		transform.rotation = Quaternion.LookRotation( Vector3.forward, ((fishingRod.IsHooked && !controller.collisions.below )? up : Vector3.up));
+		Vector3 up = fishingRod.HookInfos.hook.position - transform.position;
+		transform.rotation = Quaternion.LookRotation( Vector3.forward, ((fishingRod.HookInfos.state == FishingRod.HookState.HOOKED && !controller.collisions.below )? up : Vector3.up));
 
 
-		if (controller.collisions.below || fishingRod.IsHooked)
+		if (controller.collisions.below || fishingRod.HookInfos.state == FishingRod.HookState.HOOKED)
 			isJumping = false;
 		
-		if (controller.collisions.above || controller.collisions.below || fishingRod.IsHooked)
+		if (controller.collisions.above || controller.collisions.below || fishingRod.HookInfos.state == FishingRod.HookState.HOOKED)
 			velocity.y = 0;
 
 		Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 		
 
 
-		if (!fishingRod.IsHooked)
+		if (fishingRod.HookInfos.state == FishingRod.HookState.IDLE)
 		{
+			rigidbody.isKinematic = true;
+			
 			if (Input.GetButtonDown("Jump") && controller.collisions.below)
 			{
 				isJumping = true;
@@ -81,68 +74,16 @@ public class Player : MonoBehaviour
 		}
 		else
 		{
-			ApplyForce(transform.right * hookBalanceForce *input.x);
-			if (input.y < 0f)
-			{
-				Debug.Log("Increasing length");
-//				Vector2 vec2Up = transform.up;
-//				transform.Translate(input.y * fishingRod.PullingSpeed * Time.deltaTime * transform.up);
-//				velocity += input.y * vec2Up * fishingRod.PullingSpeed * Time.deltaTime;
-			}
+			rigidbody.isKinematic = false;
 		}
 
-
-
-		
-		velocity += acceleration * Time.deltaTime;
 		velocity += ((isJumping)? jumpGravity  : gravity) * Vector2.down * Time.deltaTime;
-		acceleration = Vector2.zero;
-		
-		
-		if (fishingRod.IsHooked)
-		{
-			//Modify velocity
-			LimitHookAngle(position + velocity * Time.deltaTime);
-		}
-		
+
 		Vector2 testPos = position + velocity * Time.deltaTime;
-		
-		if (fishingRod.IsHooked)
-		{
-			testPos = HandleHook(testPos);
-		}
+
 		Vector2 constrainedVel = controller.Collide(testPos - position);
 
 		velocity = constrainedVel / Time.deltaTime;
 		transform.Translate(constrainedVel);
-	}
-
-	private void ApplyForce(Vector2 force)
-	{
-		acceleration += force / mass;
-	}
-
-	private Vector2 HandleHook(Vector2 testPosition)
-	{
-		Vector2 hookPosition = new Vector2(fishingRod.Hook.position.x, fishingRod.Hook.position.y);
-		if (Vector2.Distance(testPosition, hookPosition) > fishingRod.RopeLength)
-		{
-			testPosition = hookPosition + (testPosition - hookPosition).normalized * fishingRod.RopeLength;
-		}
-
-		return testPosition;
-
-	}
-
-	private void LimitHookAngle(Vector2 testPosition)
-	{
-		Vector2 hookPosition = new Vector2(fishingRod.Hook.position.x, fishingRod.Hook.position.y);
-		Vector2 hookLine = (testPosition - hookPosition);
-		
-		if (Vector2.Angle(Vector2.down, hookLine) > hookMaxAngle)
-		{
-			acceleration = -2 *acceleration;
-			velocity += acceleration * Time.deltaTime;
-		}
 	}
 }

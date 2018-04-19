@@ -1,34 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MovablePlatform : MonoBehaviour {
+public class MovablePlatform : PullableObject {
 
     [SerializeField] Transform playerPos;
     private Vector3 bufferPlayerPosition;
-    private bool isGrabbed = false;
 
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
 	void FixedUpdate () {
-        if (isGrabbed)
+        if (isPulling)
         {
             transform.position = new Vector3(playerPos.position.x - bufferPlayerPosition.x, transform.position.y, 0);
         }
 	}
 
-    public void Grabbed()
+    public override void Pull()
     {
-        isGrabbed = true;
+        base.Pull();
         bufferPlayerPosition = playerPos.position - transform.position;
         
     }
-    public void Detach()
+    public override void Detach()
     {
-        isGrabbed = false;
-        Debug.Log("I HAVE BEEN UNGRABBED");
+        base.Detach();
     }
 }
