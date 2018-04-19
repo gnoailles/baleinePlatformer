@@ -1,0 +1,220 @@
+fileFormatVersion: 2
+guid: db60ac282b8bda440957ab9ed454c7f7
+timeCreated: 1524143583
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Beardo
+    100002: Canne
+    100004: curve1
+    100006: Elbow_CTRL_Left
+    100008: Elbow_CTRL_Left 1
+    100010: Elbow_Left
+    100012: Elbow_Right
+    100014: Feet_CTRL_Left
+    100016: Feet_CTRL_Right
+    100018: Feet_Left
+    100020: Feet_Right
+    100022: Feet_Top_Left
+    100024: Feet_Top_Right
+    100026: //RootNode
+    100028: geo_hat_lp
+    100030: geo_hat_straps_lp
+    100032: geo_head_lp
+    100034: geo_lamp_lp
+    100036: geo_metalstraps_lp
+    100038: geo_overall_lp
+    100040: geo_poulie
+    100042: geo_shirt_lp
+    100044: grp_controller
+    100046: grp_geo_fisherman
+    100048: grp_geo_fisherman 1
+    100050: grp_joints
+    100052: Hand_CTRL_Left
+    100054: Hand_CTRL_Left 1
+    100056: Head
+    100058: Head_CTRL
+    100060: Hip
+    100062: Hip_CTRL_Left
+    100064: Hip_CTRL_Right
+    100066: Knee_Left
+    100068: Knee_Right
+    100070: Leg_CTRL_Left
+    100072: Leg_CTRL_Right
+    100074: Leg_Left
+    100076: Leg_Right
+    100078: Neck
+    100080: Neck_CTRL
+    100082: Pectoral
+    100084: Pectorals_CTRL
+    100086: Ribs
+    100088: Shoulder_CTRL_Left
+    100090: Shoulder_CTRL_Left1
+    100092: Shoulder_Left
+    100094: Shoulder_Orient_CTRL
+    100096: Shoulder_Right
+    100098: Stomach
+    100100: Stomach_CTRL
+    100102: Wrist_CTRL_Left
+    100104: Wrist_CTRL_Left 1
+    100106: Wrist_Left
+    100108: Wrist_Right
+    100110: Wrist_Top_Left
+    100112: Wrist_Top_Right
+    400000: Beardo
+    400002: Canne
+    400004: curve1
+    400006: Elbow_CTRL_Left
+    400008: Elbow_CTRL_Left 1
+    400010: Elbow_Left
+    400012: Elbow_Right
+    400014: Feet_CTRL_Left
+    400016: Feet_CTRL_Right
+    400018: Feet_Left
+    400020: Feet_Right
+    400022: Feet_Top_Left
+    400024: Feet_Top_Right
+    400026: //RootNode
+    400028: geo_hat_lp
+    400030: geo_hat_straps_lp
+    400032: geo_head_lp
+    400034: geo_lamp_lp
+    400036: geo_metalstraps_lp
+    400038: geo_overall_lp
+    400040: geo_poulie
+    400042: geo_shirt_lp
+    400044: grp_controller
+    400046: grp_geo_fisherman
+    400048: grp_geo_fisherman 1
+    400050: grp_joints
+    400052: Hand_CTRL_Left
+    400054: Hand_CTRL_Left 1
+    400056: Head
+    400058: Head_CTRL
+    400060: Hip
+    400062: Hip_CTRL_Left
+    400064: Hip_CTRL_Right
+    400066: Knee_Left
+    400068: Knee_Right
+    400070: Leg_CTRL_Left
+    400072: Leg_CTRL_Right
+    400074: Leg_Left
+    400076: Leg_Right
+    400078: Neck
+    400080: Neck_CTRL
+    400082: Pectoral
+    400084: Pectorals_CTRL
+    400086: Ribs
+    400088: Shoulder_CTRL_Left
+    400090: Shoulder_CTRL_Left1
+    400092: Shoulder_Left
+    400094: Shoulder_Orient_CTRL
+    400096: Shoulder_Right
+    400098: Stomach
+    400100: Stomach_CTRL
+    400102: Wrist_CTRL_Left
+    400104: Wrist_CTRL_Left 1
+    400106: Wrist_Left
+    400108: Wrist_Right
+    400110: Wrist_Top_Left
+    400112: Wrist_Top_Right
+    2100000: lambert5
+    2100002: fisherman
+    4300000: geo_poulie
+    4300002: geo_lamp_lp
+    4300004: geo_metalstraps_lp
+    4300006: geo_hat_straps_lp
+    4300008: geo_hat_lp
+    4300010: geo_overall_lp
+    4300012: geo_head_lp
+    4300014: geo_shirt_lp
+    9500000: //RootNode
+    13700000: geo_hat_lp
+    13700002: geo_hat_straps_lp
+    13700004: geo_head_lp
+    13700006: geo_lamp_lp
+    13700008: geo_metalstraps_lp
+    13700010: geo_overall_lp
+    13700012: geo_poulie
+    13700014: geo_shirt_lp
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
