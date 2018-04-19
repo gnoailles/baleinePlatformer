@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.ComponentModel.Design.Serialization;
 using UnityEngine;
-using UnityEngine.Collections;
 
 public class FishingRod : MonoBehaviour
 {
@@ -25,6 +23,8 @@ public class FishingRod : MonoBehaviour
 	[SerializeField] private float minHookDistance = 3f;
 	[Tooltip("Height change speed in unit/s")]
 	[SerializeField] private float pullingSpeed = 1f;
+	[Tooltip("Strength of the balancement force added when hooked")] 
+	[SerializeField] private float balanceForce = 1f; 
 
 	private LineRenderer lineRenderer;	
 	private Vector3 cameraDist;
@@ -32,6 +32,9 @@ public class FishingRod : MonoBehaviour
 	
 	private float ropeLength;
 	private bool isHooked;
+	
+	private ConfigurableJoint playerJoint; 
+	private SoftJointLimit jointLimit; 
 
 	void Start()
 	{
@@ -39,28 +42,79 @@ public class FishingRod : MonoBehaviour
 		hitPlane = new Plane(Vector3.forward, cameraDist);
 		lineRenderer = fishingRodEnd.GetComponent<LineRenderer>();
 	}
+        void Update() 
+        { 
+            RotateRod(); 
+ 
+            if (Input.GetButtonDown("Fire1")) 
+                LaunchGrappling(); 
+            else if (Input.GetButtonUp("Fire1")) 
+                DetachHook(); 
+ 
+             
+            Rigidbody playeRigidbody = transform.root.GetComponent<Rigidbody>(); 
+            float x =Input.GetAxisRaw("Horizontal"); 
+            float y =Input.GetAxisRaw("Vertical"); 
+             
+            if (hook.gameObject.activeSelf) 
+            { 
+	            DrawLine();
+            } 
+
+	        if(isHooked)
+	        {
+                playeRigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;  
+                playeRigidbody.AddForce(Vector3.right * x * balanceForce); 
+ 
+                if (playerJoint) 
+                { 
+                    jointLimit.limit -= y * pullingSpeed * Time.deltaTime; 
+                    jointLimit.limit = Mathf.Clamp(jointLimit.limit, minLength, maxLength); 
+                    playerJoint.linearLimit = jointLimit; 
+                } 
+            } 
+            else 
+            { 
+                playeRigidbody.freezeRotation = true; 
+            } 
+        }  
+ 
+	private void SetJoint() 
+	{ 
+		playerJoint = transform.root.gameObject.AddComponent<ConfigurableJoint> (); 
+		playerJoint.connectedBody = hook.GetComponent<Rigidbody>(); 
+		playerJoint.axis = Vector3.back; 
+		playerJoint.anchor = Vector3.zero; 
+		 
+
+		playerJoint.autoConfigureConnectedAnchor = false; 
+		playerJoint.connectedAnchor = Vector3.zero; 
+		 
+		playerJoint.xMotion = ConfigurableJointMotion.Limited; 
+		playerJoint.yMotion = ConfigurableJointMotion.Limited; 
+		playerJoint.zMotion = ConfigurableJointMotion.Locked; 
 
 
-	void Update()
-	{
-		RotateRod();
-
-		if (Input.GetButtonDown("Fire1"))
-			LaunchGrappling();
-		else if (Input.GetButtonUp("Fire1"))
-			DetachHook();
-
-		float y =Input.GetAxisRaw("Vertical");
-		if (y != 0f)
+		jointLimit = new SoftJointLimit 
 		{
-			ropeLength -= y * PullingSpeed * Time.deltaTime;
-			ropeLength = Mathf.Max(ropeLength, minLength);
-		}
+			limit = Vector3.Distance(hook.transform.position,transform.root.position) + 1f, 
+			contactDistance = 1f 
+		}; 
+		playerJoint.linearLimit = jointLimit; 
+	} 
 
-		if(hook.gameObject.activeSelf)
-			DrawLine();
-		
-	}
+	private void DetachHook() 
+	{
+		hook.position = fishingRodEnd.position;
+		hook.gameObject.SetActive(false);
+		StopAllCoroutines();
+		if(playerJoint != null) Destroy(playerJoint);
+
+		transform.root.rotation = Quaternion.Euler(0, 0, transform.root.rotation.z);
+		isHooked = false;
+		lineRenderer.enabled = false;
+		lineRenderer.positionCount = 0;
+	} 
 
 	private void DrawLine()
 	{		
@@ -156,20 +210,15 @@ public class FishingRod : MonoBehaviour
 
         isHooked = true;
 		hook.transform.rotation = Quaternion.identity;
+		
+		SetJoint(); 
 
         ropeLength = Vector3.Distance(transform.root.position, hook.position);
 	}
-	
-	private void DetachHook()
-	{
-		hook.position = fishingRodEnd.position;
-		isHooked = false;
-		StopAllCoroutines();
-		hook.gameObject.SetActive(false);
-		lineRenderer.enabled = false;
-		lineRenderer.positionCount = 0;
-	}
 
+
+	#region Fields
+	
 	public Transform Hook
 	{
 		get { return hook; }
@@ -189,4 +238,6 @@ public class FishingRod : MonoBehaviour
 	{
 		get { return pullingSpeed; }
 	}
+
+	#endregion
 }

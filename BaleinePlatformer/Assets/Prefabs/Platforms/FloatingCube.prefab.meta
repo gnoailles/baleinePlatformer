@@ -2,8 +2,13 @@ fileFormatVersion: 2
 guid: 6aa9ded94b13bcd41851d14a72f468f8
 timeCreated: 1524146858
 licenseType: Free
+<<<<<<< Updated upstream:BaleinePlatformer/Assets/Prefabs/Platforms/FloatingCube.prefab.meta
 NativeFormatImporter:
   mainObjectFileID: 100100000
+=======
+DefaultImporter:
+  externalObjects: {}
+>>>>>>> Stashed changes:BaleinePlatformer/Assets/Plugins.meta
   userData: 
   assetBundleName: 
   assetBundleVariant: 
