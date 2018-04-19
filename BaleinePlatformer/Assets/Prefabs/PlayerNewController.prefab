@@ -370,7 +370,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4178779051373520}
-  - component: {fileID: 95376456297432318}
   m_Layer: 0
   m_Name: geo_fisherman
   m_TagString: Untagged
@@ -481,6 +480,7 @@ GameObject:
   - component: {fileID: 114203537304093970}
   - component: {fileID: 114901425812267660}
   - component: {fileID: 54173096832824696}
+  - component: {fileID: 95178964303719082}
   m_Layer: 0
   m_Name: PlayerNewController
   m_TagString: Untagged
@@ -1861,7 +1861,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1095460000328062}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1923,13 +1923,13 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!95 &95376456297432318
+--- !u!95 &95178964303719082
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1384814304445082}
+  m_GameObject: {fileID: 1510399456074610}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: db60ac282b8bda440957ab9ed454c7f7, type: 3}
   m_Controller: {fileID: 9100000, guid: c2e0c8e9037c05d4c91988756c134769, type: 2}
