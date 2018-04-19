@@ -8,6 +8,7 @@ public class FishingRod : MonoBehaviour
 	[SerializeField] private Camera playerCamera;
 	[SerializeField] private Transform fishingRodEnd;
 	[SerializeField] private Transform hook;
+    [SerializeField] private Transform CrossHair;
 
 	[Space(20)]
 	
@@ -62,8 +63,7 @@ public class FishingRod : MonoBehaviour
 	}
 
 	private void DrawLine()
-	{
-		
+	{		
 		lineRenderer.enabled = true;
 		lineRenderer.positionCount = 2;
 		lineRenderer.SetPosition(0,fishingRodEnd.position);
@@ -78,15 +78,21 @@ public class FishingRod : MonoBehaviour
 		}
 		else
 		{
-			Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-			float enter;
+
+         // transform.localEulerAngles = new Vector3(Input.GetAxis("Mouse X") * 60, Input.GetAxis("Mouse Y") * 50, transform.localEulerAngles.z);
+
+
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+           // Ray ray = playerCamera.ScreenPointToRay(new Vector3(Input.GetAxis("Mouse X") * 60, Input.GetAxis("Mouse Y") * 50, 0));
+
+            float enter;
 
 			if (hitPlane.Raycast(ray, out enter))
 			{
 				Vector3 hitPoint = ray.GetPoint(enter);
 				transform.LookAt(hitPoint);
 			}
-		}
+        }
 	}
 
 	private void LaunchGrappling()
