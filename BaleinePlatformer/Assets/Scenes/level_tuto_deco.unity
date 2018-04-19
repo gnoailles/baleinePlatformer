@@ -6996,7 +6996,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 916992726}
   m_LocalRotation: {x: 0.06412579, y: -0, z: -0, w: 0.99794185}
-  m_LocalPosition: {x: 0, y: 6.6, z: -15}
+  m_LocalPosition: {x: -13.04, y: 6.6, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -9346,7 +9346,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4717926252701432, guid: a9834e008d69af74ba87746ab6f6f0c2, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -13.26
       objectReference: {fileID: 0}
     - target: {fileID: 4717926252701432, guid: a9834e008d69af74ba87746ab6f6f0c2, type: 2}
       propertyPath: m_LocalPosition.y
@@ -9386,6 +9386,36 @@ Prefab:
       propertyPath: hookInfo.hook
       value: 
       objectReference: {fileID: 2021800613}
+    - target: {fileID: 120814588895390290, guid: a9834e008d69af74ba87746ab6f6f0c2,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114020757304308576, guid: a9834e008d69af74ba87746ab6f6f0c2,
+        type: 2}
+      propertyPath: hookLaunchAnimDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114020757304308576, guid: a9834e008d69af74ba87746ab6f6f0c2,
+        type: 2}
+      propertyPath: hookTravelTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114020757304308576, guid: a9834e008d69af74ba87746ab6f6f0c2,
+        type: 2}
+      propertyPath: pullingSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114020757304308576, guid: a9834e008d69af74ba87746ab6f6f0c2,
+        type: 2}
+      propertyPath: balanceForce
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114203537304093970, guid: a9834e008d69af74ba87746ab6f6f0c2,
+        type: 2}
+      propertyPath: gravity
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a9834e008d69af74ba87746ab6f6f0c2, type: 2}
   m_IsPrefabParent: 0
