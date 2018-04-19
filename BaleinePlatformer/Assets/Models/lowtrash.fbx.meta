@@ -1,0 +1,157 @@
+fileFormatVersion: 2
+guid: 451bb8e97203ea5478911f71bdbfaed8
+timeCreated: 1524158329
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Bottle
+    100002: Bottle2
+    100004: Bottle2_low
+    100006: Bottle_low
+    100008: Brancche
+    100010: Caisse1
+    100012: Caisse1_low
+    100014: Canette
+    100016: Canette2
+    100018: Canette2_low
+    100020: Canette_low
+    100022: Cup
+    100024: Cup_low
+    100026: //RootNode
+    100028: MilkBottle
+    100030: MilkBottle_low
+    100032: MilkCarton
+    100034: MilkCarton_low
+    100036: SacPoubelle
+    400000: Bottle
+    400002: Bottle2
+    400004: Bottle2_low
+    400006: Bottle_low
+    400008: Brancche
+    400010: Caisse1
+    400012: Caisse1_low
+    400014: Canette
+    400016: Canette2
+    400018: Canette2_low
+    400020: Canette_low
+    400022: Cup
+    400024: Cup_low
+    400026: //RootNode
+    400028: MilkBottle
+    400030: MilkBottle_low
+    400032: MilkCarton
+    400034: MilkCarton_low
+    400036: SacPoubelle
+    2100000: lambert1
+    2300000: Bottle2_low
+    2300002: Bottle_low
+    2300004: Brancche
+    2300006: Caisse1_low
+    2300008: Canette2_low
+    2300010: Canette_low
+    2300012: Cup_low
+    2300014: MilkBottle_low
+    2300016: MilkCarton_low
+    2300018: SacPoubelle
+    3300000: Bottle2_low
+    3300002: Bottle_low
+    3300004: Brancche
+    3300006: Caisse1_low
+    3300008: Canette2_low
+    3300010: Canette_low
+    3300012: Cup_low
+    3300014: MilkBottle_low
+    3300016: MilkCarton_low
+    3300018: SacPoubelle
+    4300000: Canette2_low
+    4300002: Canette_low
+    4300004: Bottle_low
+    4300006: Bottle2_low
+    4300008: MilkBottle_low
+    4300010: MilkCarton_low
+    4300012: Caisse1_low
+    4300014: SacPoubelle
+    4300016: Cup_low
+    4300018: Brancche
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,4 +1,8 @@
 <<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> art
+<<<<<<< HEAD
 <<<<<<< HEAD
 m_EditorVersion: 2017.4.1f1
 =======
@@ -7,3 +11,9 @@ m_EditorVersion: 2017.3.1f1
 =======
 m_EditorVersion: 2017.1.0f3
 >>>>>>> develop
+<<<<<<< HEAD
+=======
+=======
+m_EditorVersion: 2017.4.1f1
+>>>>>>> Stashed changes
+>>>>>>> art
