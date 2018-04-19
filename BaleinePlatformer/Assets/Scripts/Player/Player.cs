@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
 	
 	private Controller controller;
 	private Rigidbody rigidbody;
+	private Animator animator;
 	private Vector2 velocity;
 	private Vector2 position;
 	private float jumpGravity;
@@ -31,7 +32,9 @@ public class Player : MonoBehaviour
 	void Start()
 	{
 		controller = GetComponent<Controller>();
+		animator = GetComponent<Animator>();
 		rigidbody = GetComponent<Rigidbody>();
+		rigidbody.useGravity = true;
 		jumpGravity = (2 * jumpHeight) / (timeToJumpApex * timeToJumpApex);
 		jumpVelocity = jumpGravity * timeToJumpApex;
 	}
@@ -63,6 +66,13 @@ public class Player : MonoBehaviour
 				isJumping = true;
 				velocity.y = jumpVelocity;
 			}
+
+			if (animator != null)
+			{
+				animator.SetBool("isWalking", input.x > 0f);
+			}
+				
+			
 
 			float targetVelocityX = input.x * moveSpeed;
 			velocity.x = Mathf.SmoothDamp(
