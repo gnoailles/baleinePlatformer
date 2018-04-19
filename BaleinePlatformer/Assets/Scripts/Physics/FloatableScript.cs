@@ -4,23 +4,30 @@ using UnityEngine;
 
 public class FloatableScript : MonoBehaviour {
 
-    [SerializeField] private float forceFactor;
-    [SerializeField] private float waterLevel;
-    [SerializeField] private float Height;
+    [Tooltip("Plus la valeur est grande plus le rebond sera petit")]
     [SerializeField] private float bounceDamp;
+    [SerializeField] private float floatLine;
+    [SerializeField] private float forceFactor = 0.5f;
+    [SerializeField] Vector3 buoyancyCentreOffset = new Vector3(0, 0, 0);
     private Vector3 actionPoint;
     private Vector3 uplift;
-    [SerializeField] Vector3 buoyancyCentreOffset;
-
-    void Update()
+ 
+    private void OnTriggerStay(Collider collision)
     {
-        actionPoint = transform.position + transform.TransformDirection(buoyancyCentreOffset);
-        forceFactor = 1f - ((actionPoint.y - waterLevel) / Height);
-
-        if (forceFactor > 0f)
+        if (collision.gameObject.transform.position.y < -floatLine)
         {
-            uplift = -Physics.gravity * (forceFactor - GetComponent<Rigidbody>().velocity.y * bounceDamp);
-            GetComponent<Rigidbody>().AddForceAtPosition(uplift, actionPoint);
+            float height = transform.position.y;
+            float waterHeight = transform.position.y;
+            actionPoint = collision.transform.position + collision.transform.TransformDirection(buoyancyCentreOffset);
+            float force = forceFactor - ((actionPoint.y - waterHeight) / (height));
+
+            if (force > 0f)
+            {
+                uplift = -Physics.gravity * (force - collision.GetComponent<Rigidbody>().velocity.y * bounceDamp);
+                collision.GetComponent<Rigidbody>().AddForceAtPosition(uplift, actionPoint);
+            }
         }
+     
     }
+
 }
