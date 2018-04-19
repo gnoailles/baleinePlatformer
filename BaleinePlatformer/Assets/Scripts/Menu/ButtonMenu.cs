@@ -27,7 +27,7 @@ public class ButtonMenu : MonoBehaviour {
 
     public void Start()
     {
-   //    SceneManager.LoadScene(nameOfGameScene, LoadSceneMode.Single);
+       SceneManager.LoadScene(nameOfGameScene, LoadSceneMode.Single);
     }
     public void Menu()
     {
