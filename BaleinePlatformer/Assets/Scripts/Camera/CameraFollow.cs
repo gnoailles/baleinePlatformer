@@ -30,7 +30,7 @@ public class CameraFollow : MonoBehaviour
 		if (Mathf.Abs(player.transform.position.y - transform.position.y) > maxYDifference)
 		{
 			float diffSign = Mathf.Sign(player.transform.position.y - transform.position.y);
-			targetPos.y = Mathf.Lerp(transform.position.y, transform.position.y + maxYDifference * diffSign + yOffset, 1f / yDelay * Time.deltaTime);
+			targetPos.y = Mathf.Lerp(transform.position.y, player.transform.position.y + yOffset, 1f / yDelay * Time.deltaTime);
 		}
 		transform.position = targetPos;
 	}
