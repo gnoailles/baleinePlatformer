@@ -10,7 +10,7 @@ public class FadingScript : MonoBehaviour {
     private bool mustFade = false;
 
     // Use this for initialization
-    void Start ()
+    void Awake ()
     {
             StartCoroutine("Fading");
 	}

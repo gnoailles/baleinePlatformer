@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Controller))]
 public class Player : MonoBehaviour
@@ -6,9 +8,10 @@ public class Player : MonoBehaviour
 	
 	
 	[SerializeField] private FishingRod fishingRod;
-	
-	
-	[SerializeField] private float gravity = 20f;
+    [SerializeField] private Transform spawnPoint;
+
+
+    [SerializeField] private float gravity = 20f;
 	[SerializeField] private float moveSpeed = 5f;
 	[SerializeField] private float accelerationTimeAirbourne = 0.2f;
 	[SerializeField] private float accelerationTimeGrounded = 0.1f;
@@ -28,8 +31,9 @@ public class Player : MonoBehaviour
 
 	private float smoothedXVelocity;
 	private bool isJumping;
+    private bool isAlive = true;
 
-	void Start()
+    void Start()
 	{
 		controller = GetComponent<Controller>();
 		animator = GetComponent<Animator>();
@@ -37,10 +41,17 @@ public class Player : MonoBehaviour
 		rigidbody.useGravity = true;
 		jumpGravity = (2 * jumpHeight) / (timeToJumpApex * timeToJumpApex);
 		jumpVelocity = jumpGravity * timeToJumpApex;
-	}
+        transform.position = spawnPoint.position;
+
+    }
 
 	private void Update()
 	{
+
+        if(!isAlive)
+        {
+            StartCoroutine(Respawn());
+        }
 		position = transform.position;
 		
 		Vector3 up = fishingRod.HookInfos.hook.position - transform.position;
@@ -100,4 +111,16 @@ public class Player : MonoBehaviour
         }
 
 	}
+
+    IEnumerator Respawn()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+        yield break;
+    }
+
+    public bool IsAlive
+    {
+        get { return isAlive; }
+        set { isAlive = value; }
+    }
 }

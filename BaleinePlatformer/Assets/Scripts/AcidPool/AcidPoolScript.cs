@@ -7,6 +7,8 @@ public class AcidPoolScript : MonoBehaviour {
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
-            other.gameObject.SetActive(false);
+        {
+            other.gameObject.GetComponent<Player>().IsAlive = false;
+        }
     }
 }
