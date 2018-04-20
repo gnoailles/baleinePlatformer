@@ -9,8 +9,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 5cbe4f7db22962340b4c6d1ed269f287
   - enabled: 1
-    path: Assets/Scenes/DevElouan.unity
-    guid: d55933cdf20bc3c40bed8240dea5ffab
-  - enabled: 1
     path: Assets/Scenes/level_tuto_deco.unity
     guid: 8c272dec47b757d42a828dcf66529300

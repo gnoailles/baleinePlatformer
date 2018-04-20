@@ -25,8 +25,9 @@ public class ButtonMenu : MonoBehaviour {
         }
     }
 
-    public void Start()
+    public void Load()
     {
+        Debug.Log("MAIS VA MOURIR");
        SceneManager.LoadScene(nameOfGameScene, LoadSceneMode.Single);
     }
     public void Menu()
