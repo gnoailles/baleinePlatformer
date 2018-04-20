@@ -1085,7 +1085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42bc64e04b7d03a4481b5dbad3b55749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsBeforeFading: 6
+  secondsBeforeFading: 3
   speedFading: 3
 --- !u!114 &581698803
 MonoBehaviour:
@@ -3488,7 +3488,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1793674687
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3539,7 +3539,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 40fd570dc123648429f613ef47d759bb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6f24725e680c58f499032ef8d4bfbf65, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4403,7 +4403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcc12f81147553b48be455e18bee9b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfGameScene: level_tuto_deco
+  nameOfGameScene: LEvel_Tuto_deco_V4
   MenuGameObject: {fileID: 606653590}
   OptionsGameObject: {fileID: 1995692509}
   CheckBoxFullScreen: {fileID: 522936510}
