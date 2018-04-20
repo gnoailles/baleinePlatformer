@@ -39,6 +39,7 @@ public class PausMenuScript : MonoBehaviour {
 
     public void BackToMenu()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(MenuName, LoadSceneMode.Single);
     }
 
