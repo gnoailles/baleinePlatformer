@@ -20,7 +20,7 @@ public class FadingScript : MonoBehaviour {
     {
         if (mustFade)
             Fade();
-        if (gameObject.GetComponent<Image>().color.a <= 0.0f)
+        if (gameObject.GetComponent<Image>().color.a <= 0.01f)
             gameObject.SetActive(false);
     }
 
