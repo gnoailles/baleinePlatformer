@@ -49,7 +49,7 @@ public class PlayerMovements : MonoBehaviour {
         moveDirection.x = horiz * speed;
 
         RaycastHit hit;
-        if (playerRigidbody.SweepTest(moveDirection, out hit, 0.15f))
+        if (playerRigidbody.SweepTest(moveDirection, out hit, 0.15f, QueryTriggerInteraction.Ignore))
             playerRigidbody.velocity = new Vector3(0, playerRigidbody.velocity.y, 0);
         else
             playerRigidbody.velocity = moveDirection;
@@ -59,9 +59,10 @@ public class PlayerMovements : MonoBehaviour {
     {
         if (!isGrabbed)
         {
-       if (Input.GetButton(jumpAxis))
-           Jump();
-       MovePlayer(X);
+           if (Input.GetButton(jumpAxis))
+                Jump();
+
+           MovePlayer(X);
         }
     }
 
