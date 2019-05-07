@@ -1,5 +1,5 @@
 # WhaleScape
-WhaleScape is Game Week (4 gays game jam) project. The jam theme was "Au coeur de la bête" (translated "In the heart of the beast"). The game has been made with Unity.
+WhaleScape is Game Week (4 gays game jam) project. The jam theme was "Dans le ventre de la bête" (translated "In the belly of the beast"). The game has been made with Unity.
 
 ## Gameplay
 The gameplay is based on grappling hook movements.
